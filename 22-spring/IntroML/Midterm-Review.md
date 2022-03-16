@@ -140,4 +140,127 @@ $$
 \beta_1 = \frac{s_{xy}}{s_x^2} = \frac{r_{xy} s_y}{s_x}, \quad \beta_0 = \bar{y} - \beta_1 \bar{x}
 $$
 
-#### 
+#### 决定系数 $R^2$ —— 另一个评判标准
+
+1. 定义
+
+$$
+R^2 = r_{xy}^2
+$$
+
+2. 评判标准
+
+    * $R^2 = r_{xy}^2 \approx 1$: 线性模型解释力较好，自变量能够较好地决定因变量。
+    * $R^2 = r_{xy}^2 \approx 0$: 模型解释力较差，自变量不能很好决定因变量。
+
+3. 符号关系
+
+$$
+\beta_1 = \frac{r_{xy} s_y}{s_x} \Rightarrow Sign(\beta_1) = Sign(r_{xy})
+$$
+
+也就是说，系数 $\beta_1$ 的符号和 $r_{xy}$ 的符号是相同的。
+
+### 多重线性回归（Multiple Linear Regression）
+
+多重线性回归是简单线性回归的推广，研究一个因变量与多个自变量之间的数量依存关系。 多重线性回归用回归方程描述一个因变量与多个自变量的依存关系，简称多重回归。
+
+#### 和简单线性回归有什么区别？
+
+* $y$：所预测的变量变成了多项式：
+
+$$
+y \approx \hat{y} = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k
+$$
+
+* $x$：由标量变为向量，称为vector of attributes
+
+$$
+\boldsymbol{x} = [x_1, x_2, \dots, x_k]
+$$
+
+* 数据变为每个样本对应的属性矢量 $\boldsymbol{x}_i$ 和 对应的预测变量的标量值 $y_i$ 的组合 $(\boldsymbol{x}_i, y_i), \ i = 1, 2, \dots, n$
+
+* 模型训练目标：找到最好的参数向量 $\boldsymbol{\beta} = [\beta_0, \beta_1, \cdots, \beta_k]$
+
+#### 模型
+
+$$
+\hat{y} = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k\
+$$
+
+有时也会写作权重-偏差形式（weight-bias version）
+
+$$
+\hat{y} = b + w_1 x_1 + \cdots + w_k x_k
+$$
+
+两种形式都可以转化为内积形式：
+
+$$
+\hat{y} = \beta_0 + \boldsymbol{\beta}_{1:k} \cdot \boldsymbol{x}
+$$
+
+$$
+\hat{y} = b + \boldsymbol{w} \cdot \boldsymbol{x}
+$$
+
+#### 线性回归的矩阵形式
+
+$$
+\left[
+\begin{matrix}
+\hat{y}_1 \\
+\hat{y}_2 \\
+\vdots \\
+\hat{y}_n
+\end{matrix}
+\right]
+=
+\left[
+\begin{matrix}
+1 & x_{11} & \cdots & x_{1k} \\
+1 & x_{21} & \cdots & x_{2k} \\
+\vdots & \vdots & & \vdots \\
+1 & x_{n1} & \cdots & x_{nk}
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_k
+\end{matrix}
+\right]
+$$
+
+将矩阵 $\boldsymbol{A}$ 记为一个$n \times (k+1)$ 的矩阵，并有
+
+$$
+\boldsymbol{A} = \left[
+\begin{matrix}
+1 & x_{11} & \cdots & x_{1k} \\
+1 & x_{21} & \cdots & x_{2k} \\
+\vdots & \vdots & & \vdots \\
+1 & x_{n1} & \cdots & x_{nk}
+\end{matrix}
+\right]
+$$
+
+那么线性回归的矩阵形式可以简记为
+
+$$
+\hat{\boldsymbol{y}} = \boldsymbol{A \beta}
+$$
+
+#### 多重线性回归的残差平方和
+
+$$
+RSS(\boldsymbol{\beta}) = \sum_{i=1}^N (y_i - \hat{y}_i)^2
+$$
+
+注意 $\hat{y}_i$ 是 $\boldsymbol{\beta} = [\beta_0, \beta_1, \cdots, \beta_k]$ 的函数。
+
+我们要找到使 $RSS(\boldsymbol{\beta})$ 最小的 $\boldsymbol{\beta}$。
+
