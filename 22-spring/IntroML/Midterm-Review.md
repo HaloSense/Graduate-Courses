@@ -235,7 +235,13 @@ $$
 \right]
 $$
 
-将矩阵 $\boldsymbol{A}$ 记为一个$n \times (k+1)$ 的矩阵，并有
+将矩阵 $\boldsymbol{A}$ 记为一个$n \times (k+1)$ 的矩阵，那么线性回归的矩阵形式可以简记为
+
+$$
+\hat{\boldsymbol{y}} = \boldsymbol{A \beta}
+$$
+
+其中
 
 $$
 \boldsymbol{A} = \left[
@@ -248,12 +254,6 @@ $$
 \right]
 $$
 
-那么线性回归的矩阵形式可以简记为
-
-$$
-\hat{\boldsymbol{y}} = \boldsymbol{A \beta}
-$$
-
 #### 多重线性回归的残差平方和
 
 $$
@@ -263,4 +263,101 @@ $$
 注意 $\hat{y}_i$ 是 $\boldsymbol{\beta} = [\beta_0, \beta_1, \cdots, \beta_k]$ 的函数。
 
 我们要找到使 $RSS(\boldsymbol{\beta})$ 最小的 $\boldsymbol{\beta}$。
+
+#### 多重线性回归的最小二乘解
+
+$$
+\widehat{\boldsymbol{\beta}} = (\boldsymbol{A}^\intercal \boldsymbol{A})^{-1} \boldsymbol{A}^\intercal \boldsymbol{y}
+$$
+
+如何证明：计算 $RSS(\boldsymbol{\beta})$ 的梯度并令其取值为0.
+
+#### 模型评价标准: $R^2$
+
+$$
+R^2 = \frac{s_y^2 - MSE}{s_y^2} = 1 - \frac{MSE}{s_y^2}
+$$
+$$
+MSE = \frac{RSS}{N} = \frac{1}{N} \sum_{i=1}^N (y_i - \bar{y})^2
+$$
+
+#### 拓展：独热编码
+
+如果有一个“特征”（Feature）是离散的（或“分类的”， categorical），那么没有办法直接放入方程进行计算，但是可以通过编码将其转换成数字。
+
+例如：预测量 $y$ 为汽车马力，对于汽车品牌特征 $x_1$ 有三种取值：Ford、BMW、GM。假设对于三种品牌，截距分别为 $\beta_0 + \beta_1$, $\beta_0 + \beta_2$, $\beta_0 + \beta_3$。模型可以是：
+
+$$
+y = \beta_0 + \beta_1 \phi_1 + \beta_2 \phi_2 + \beta_3 \phi_3 + \beta_4 x_2 + \cdots
+$$
+
+其中
+
+$$
+\boldsymbol{\phi} = [\phi_0, \phi_1, \phi_2] = \begin{cases}
+[1, 0, 0], \ \text{Brand = Ford} \\
+[0, 1, 0], \ \text{Brand = BMW} \\
+[0, 0, 1], \ \text{Brand = GW}
+\end{cases}
+$$
+
+## 多项式模型以及模型阶数选择
+
+### 多项式模型
+
+$$
+f(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_d x^d
+$$
+
+### 如何选择多项式的阶数？
+
+**不能直接计算**不同阶数多项式模型的 $RSS$ 再选其中 $RSS$ 最小的阶数。因为随着阶数增加，模型对训练集的匹配程度变高，$RSS$ 是单调递减的，会导致**过拟合**，对新数据的预测效果会变差。
+
+输出 $MSE$：
+
+$$
+MSE_y(\boldsymbol{x}_{test}) = MSE_f(\boldsymbol{x}_{test}) + \sigma_{\epsilon}^2
+$$
+
+
+
+引进两个变量：
+
+* 偏差：$Bias(\boldsymbol{x}_{test}) = E[f(\boldsymbol{x}_{test}, \widehat{\boldsymbol{\beta}})] - f_0(\boldsymbol{x}_{test})$
+
+* 方差：$Var(\boldsymbol{x}_{test}) = E[f(\boldsymbol{x}_{test}, \widehat{\boldsymbol{\beta}}) - E[f(\boldsymbol{x}_{test}, \widehat{\boldsymbol{\beta}})]]^2$
+
+对于两种参数：
+
+* 阶数较低时：偏差较高，方差较低
+* 阶数中等（接近或等于实际阶数）时：没有偏差，方差中等
+* 阶数较高时：没有偏差，方差较高
+
+### 模型的 $MSE$
+
+$$
+MSE_f(\boldsymbol{x}_{test}) = Bias(\boldsymbol{x}_{test})^2 + Var(\boldsymbol{x}_{test})
+$$
+
+### WIP
+
+### 交叉验证-K折交叉验证
+
+将数据集作为一个整体，分为 $K$ 份，每次选取其中 $K-1$ 份训练模型，剩下1份用于验证。$K$ 的典型值是5或10。
+
+验证过程：
+
+1. 对所有阶数的K折，计算平均 $RSS$
+2. 计算 $RSS$ 的标准误差：
+$$
+SE = \frac{RSS_{std}}{\sqrt{K-1}}
+$$
+3. 选择最优模型阶数
+
+### One SE Rule - 单标准误差法
+
+对于K折中的 $RSS$，设其最低值对应的阶数为 $d_0$, 选择 $d_{opt}$ 作为最终选择阶数，其中 $RSS(d_{opt}) < RSS(d_0) + SE(RSS(d_0))$。也就是说，不选择 $RSS$ 最低的阶数作为最优，而是选择 $RSS$ 距离最小值不超过对应 $SE$ 的最简模型作为最优。
+
+## 特征选择
+
 
