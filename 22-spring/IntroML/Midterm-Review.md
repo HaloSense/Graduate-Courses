@@ -278,7 +278,7 @@ $$
 R^2 = \frac{s_y^2 - MSE}{s_y^2} = 1 - \frac{MSE}{s_y^2}
 $$
 $$
-MSE = \frac{RSS}{N} = \frac{1}{N} \sum_{i=1}^N (y_i - \bar{y})^2
+MSE = \frac{RSS}{N} = \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2
 $$
 
 #### 拓展：独热编码
@@ -295,9 +295,9 @@ $$
 
 $$
 \boldsymbol{\phi} = [\phi_0, \phi_1, \phi_2] = \begin{cases}
-[1, 0, 0], \ \text{Brand = Ford} \\
-[0, 1, 0], \ \text{Brand = BMW} \\
-[0, 0, 1], \ \text{Brand = GW}
+[1, 0, 0], & \text{Brand = Ford} \\
+[0, 1, 0], & \text{Brand = BMW} \\
+[0, 0, 1], & \text{Brand = GM}
 \end{cases}
 $$
 
